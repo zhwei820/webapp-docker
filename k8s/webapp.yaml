@@ -30,7 +30,7 @@ spec:
 
       - name: django-app
         imagePullPolicy: Always
-        image: 192.168.1.5:5000/starter:v0.0.1.26
+        image: 192.168.1.5:5000/starter:v0.0.1.29
         ports:
         - containerPort: 8000
           protocol: TCP
@@ -61,22 +61,6 @@ spec:
         configMap:
           name: filebeat-config
 
----
-# -------------- ConfigMap ------------------- #
-
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: filebeat-config
-data:
-  filebeat.yml: |
-    filebeat.prospectors:
-    - input_type: log
-      paths:
-        - "/log/*"
-    output.elasticsearch:
-      hosts: ["192.168.1.5:9200"]
-      index: "filebeat-web-app"
 
 # ------------------- Service ------------------- #
 
@@ -97,3 +81,22 @@ spec:
       nodePort: 30000
   selector:
     k8s-app: django-app
+
+
+
+---
+# -------------- ConfigMap ------------------- #
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: filebeat-config
+data:
+  filebeat.yml: |
+    filebeat.prospectors:
+    - input_type: log
+      paths:
+        - "/log/*"
+    output.elasticsearch:
+      hosts: ["192.168.1.5:9200"]
+      index: "filebeat-web-app"
