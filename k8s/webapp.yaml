@@ -28,7 +28,6 @@ spec:
         - name: filebeat-config
           mountPath: /etc/filebeat
 
-
       - name: django-app
         imagePullPolicy: Always
         image: 192.168.1.5:5000/starter:v0.0.1.26
@@ -39,6 +38,8 @@ spec:
           # Create on-disk volume to store logs
         - mountPath: /data/logs
           name: app-logs
+        - mountPath: /srv/starter/settings.yaml
+          name: app-settings          
         livenessProbe:
           # httpGet:
           #   scheme: HTTP
@@ -50,6 +51,10 @@ spec:
           timeoutSeconds: 30
 
       volumes:
+      - name: app-settings
+        configMap:
+          name: webapp-config
+
       - name: app-logs
         emptyDir: {}
       - name: filebeat-config
@@ -70,8 +75,8 @@ data:
       paths:
         - "/log/*"
     output.elasticsearch:
-      hosts: ["192.168.1.19:9600"]
-      index: "filebeat-tomcat-shopxx"
+      hosts: ["192.168.1.5:9200"]
+      index: "filebeat-web-app"
 
 # ------------------- Service ------------------- #
 
