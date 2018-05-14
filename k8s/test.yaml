@@ -1,0 +1,30 @@
+
+kind: Deployment
+apiVersion: apps/v1beta2
+metadata:
+  labels:
+    k8s-app: test-app
+  name: test-app
+  namespace: default
+spec:
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: test-app
+  template:
+    metadata:
+      labels:
+        k8s-app: test-app
+    spec:
+      imagePullSecrets:
+      - name: myregistrykey
+
+      containers:
+
+      - name: test-app
+        imagePullPolicy: Always
+        image: 192.168.1.5:5000/starter:v0.0.1.29
+        ports:
+        - containerPort: 8000
+          protocol: TCP

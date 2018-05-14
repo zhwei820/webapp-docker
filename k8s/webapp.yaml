@@ -17,7 +17,7 @@ spec:
       labels:
         k8s-app: django-app
     spec:
-    
+
       containers:
 
       - image: prima/filebeat:5
@@ -60,6 +60,9 @@ spec:
       - name: filebeat-config
         configMap:
           name: filebeat-config
+
+      imagePullSecrets:
+      - name: myregistrykey
 
 
 # ------------------- Service ------------------- #
