@@ -6,13 +6,9 @@ do
     version=$LINE
 done
 
-# env = dev/test/prod ...
-# env_var = docker_registry_dev/docker_registry_test/docker_registry_prod ...
+# env = test/prod ...
 
-env_var=docker_registry_$env
-image_registry=`eval echo  '$'$env_var`
-
-image_name=$image_registry/starter:v$version.$BUILD_NUMBER
+image_name=192.168.1.5:5000/starter:v$version.$BUILD_NUMBER
 
 docker build --force-rm -t $image_name . 
 
